@@ -1,0 +1,41 @@
+﻿@model Remote_Arduino.Models.Project.ManageViewModel
+
+@{
+    ViewData["Title"] = "Manage";
+}
+
+<h1>Manage</h1>
+
+<div class="row">
+    <div class="col-sm-12"></div>
+<textarea id="output" style="width: 100%; max-width: 100%;min-height:200px" readonly="readonly"></textarea>
+</div>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
+
+    $(document).ready(function () {
+      function getInfo() {
+        $.ajax({
+            type: "GET",
+            url: "../GetInfo?id=@Model.Id",
+            dataType: "json",
+            success: function (data) {
+
+                if (data.Sent == false) {
+                    setTimeout(function () {
+                    getInfo();
+                }, 2000)
+                }
+                //alert("succes");
+                $("#output").val(data.Message);
+            }
+        });
+    }
+    getInfo();
+});
+</script>
+
+
+

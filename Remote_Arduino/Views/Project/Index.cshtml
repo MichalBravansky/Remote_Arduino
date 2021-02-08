@@ -1,0 +1,47 @@
+﻿@model Remote_Arduino.Models.Project.ProjectViewModel
+
+@{
+    ViewData["Title"] = "Project";
+}
+<h1>Here you can upload your code</h1>
+
+@{if (Model.CanRun)
+    {
+<form id="upload_form" enctype="multipart/form-data" action="/project/upload" method="post">
+    <input type="file" id="file" name="file" class="d-none" onchange="$('#upload_form').submit()" />
+    <div class="upload-drop-zone" id="drop-zone" onclick="$('#file').trigger('click');">
+        Just drag and drop files here
+    </div>
+</form>
+
+
+<script>
+    var dropZone = document.getElementById('drop-zone');
+    var fileInput = document.getElementById('file');
+
+    dropZone.ondrop = function (e) {
+        e.preventDefault();
+        this.className = 'upload-drop-zone';
+
+        fileInput.files = e.dataTransfer.files;
+
+        $('#upload_form').submit();
+
+    }
+
+    dropZone.ondragover = function () {
+        this.className = 'upload-drop-zone drop';
+        return false;
+    }
+
+    dropZone.ondragleave = function () {
+        this.className = 'upload-drop-zone';
+        return false;
+    }
+</script>
+    }
+    else
+    {
+        <p>Another program is running, please try again later.</p>
+    }
+    }
